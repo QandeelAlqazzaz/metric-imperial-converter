@@ -21,11 +21,15 @@ function ConvertHandler() {
   this.getNum = function (input) {
     if (!input || typeof input !== "string") return "invalid number";
 
-    // match leading number/fraction
-    const result = input.match(/^[.\d\/]+/);
-    if (!result) return 1;
+    // Find the first letter in the input
+    const firstLetterIndex = input.search(/[a-zA-Z]/);
+    if (firstLetterIndex === -1) return "invalid number";
 
-    const numStr = result[0];
+    // Extract the number part
+    const numStr = input.substring(0, firstLetterIndex);
+    if (!numStr) return 1; // Default to 1 if no number provided
+
+    // Check for multiple fractions
     if ((numStr.match(/\//g) || []).length > 1) return "invalid number";
 
     try {
@@ -39,12 +43,15 @@ function ConvertHandler() {
   this.getUnit = function (input) {
     if (!input || typeof input !== "string") return "invalid unit";
 
-    const result = input.match(/[a-zA-Z]+$/);
-    if (!result) return "invalid unit";
+    // Find the first letter in the input
+    const firstLetterIndex = input.search(/[a-zA-Z]/);
+    if (firstLetterIndex === -1) return "invalid unit";
 
-    const unit = result[0].toLowerCase();
+    // Extract the unit part
+    const unit = input.substring(firstLetterIndex).toLowerCase();
     if (!units[unit]) return "invalid unit";
 
+    // Return uppercase 'L' for liter, lowercase for others
     return unit === "l" ? "L" : unit;
   };
 

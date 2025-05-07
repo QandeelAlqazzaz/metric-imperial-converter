@@ -15,10 +15,15 @@ router.get("/convert", (req, res) => {
   const initUnit = convertHandler.getUnit(input);
 
   // error priority
-  if (initNum === "invalid number" && initUnit === "invalid unit")
+  if (initNum === "invalid number" && initUnit === "invalid unit") {
     return res.send("invalid number and unit");
-  if (initNum === "invalid number") return res.send("invalid number");
-  if (initUnit === "invalid unit") return res.send("invalid unit");
+  }
+  if (initNum === "invalid number") {
+    return res.send("invalid number");
+  }
+  if (initUnit === "invalid unit") {
+    return res.send("invalid unit");
+  }
 
   const returnNum = convertHandler.convert(initNum, initUnit);
   const returnUnit = convertHandler.getReturnUnit(initUnit);
@@ -29,7 +34,13 @@ router.get("/convert", (req, res) => {
     returnUnit
   );
 
-  res.json({ initNum, initUnit, returnNum, returnUnit, string });
+  res.json({
+    initNum: Number(initNum),
+    initUnit: initUnit,
+    returnNum: Number(returnNum),
+    returnUnit: returnUnit,
+    string: string,
+  });
 });
 
 module.exports = router;
